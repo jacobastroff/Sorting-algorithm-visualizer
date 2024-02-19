@@ -41,18 +41,22 @@ class View {
       // console.log(this.allBoxes);
     });
   }
-  switchBubbleArray(curValIndex, nextValIndex) {
+  async switchBubbleArray(curValIndex, nextValIndex) {
     const curValElement = this.allBoxes[curValIndex];
     const nextValElement = this.allBoxes[nextValIndex];
     // console.log(curValElement, nextValElement);
     this.allBoxes[curValIndex] = this.allBoxes[nextValIndex];
     this.allBoxes[nextValIndex] = curValElement;
     curValElement.classList.add("active");
-
-    const curValTransform = curValElement.style.transform;
-    curValElement.style.transform = nextValElement.style.transform;
-    nextValElement.style.transform = curValTransform;
-    curValElement.classList.remove("active");
+    await new Promise((resolve) =>
+      setTimeout(function () {
+        const curValTransform = curValElement.style.transform;
+        curValElement.style.transform = nextValElement.style.transform;
+        nextValElement.style.transform = curValTransform;
+        curValElement.classList.remove("active");
+        resolve();
+      }, 100)
+    );
   }
 }
 

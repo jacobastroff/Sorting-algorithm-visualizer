@@ -25,17 +25,28 @@ class Data {
       if (this.#curArray.length === arraySize) break;
     }
   }
-  bubbleSort(view) {
+  async bubbleSort(view) {
     console.log(this.#curArray);
     for (const _ of this.#curArray) {
-      this.#curArray.forEach((a, i, array) => {
-        const b = array[i + 1];
+      // await new Promise((resolve) =>
+      //   setTimeout(function () {
+      //     resolve();
+      //   }, 200)
+      // );
+      for (const [i, a] of this.#curArray.entries()) {
+        await new Promise((resolve) =>
+          setTimeout(function () {
+            resolve();
+          }, 100)
+        );
+        const b = this.#curArray[i + 1];
         if (a - b > 0) {
-          array[i] = b;
-          array[i + 1] = a;
+          this.#curArray[i] = b;
+          this.#curArray[i + 1] = a;
+          console.log(this.#curArray);
           view.switchBubbleArray(i, i + 1);
         }
-      });
+      }
     }
     console.log(this.#curArray);
   }
