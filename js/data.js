@@ -34,13 +34,13 @@ class Data {
       //   }, 200)
       // );
       for (const [i, a] of this.#curArray.entries()) {
-        await new Promise((resolve) =>
-          setTimeout(function () {
-            resolve();
-          }, 100)
-        );
         const b = this.#curArray[i + 1];
         if (a - b > 0) {
+          await new Promise((resolve) =>
+            setTimeout(function () {
+              resolve();
+            }, 100)
+          );
           this.#curArray[i] = b;
           this.#curArray[i + 1] = a;
           console.log(this.#curArray);
@@ -49,6 +49,7 @@ class Data {
       }
     }
     console.log(this.#curArray);
+    await view.renderSortedArray();
   }
 }
 

@@ -5,7 +5,7 @@ class View {
   #arrayCreator = document.querySelector(".create-new-array");
   #bubble = document.querySelector("#bubble");
   allBoxes;
-  constructor(themeColor = undefined) {
+  constructor(themeColor = "#3298df") {
     this.themeColor = themeColor;
     this.#arrayModifier.addEventListener(
       "change",
@@ -56,6 +56,22 @@ class View {
         curValElement.classList.remove("active");
         resolve();
       }, 100)
+    );
+  }
+  async renderSortedArray() {
+    for (const box of this.allBoxes) {
+      box.style.backgroundColor = "purple";
+    }
+    await new Promise((resolve) =>
+      setTimeout(
+        function () {
+          for (const box of this.allBoxes) {
+            box.style.backgroundColor = this.themeColor;
+          }
+          resolve();
+        }.bind(this),
+        3000
+      )
     );
   }
 }
