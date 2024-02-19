@@ -4,6 +4,7 @@ class View {
   #arrayModifier = document.querySelector("#select-array-length");
   #arrayCreator = document.querySelector(".create-new-array");
   #bubble = document.querySelector("#bubble");
+  #insert = document.querySelector("#insert");
   allBoxes;
   constructor(themeColor = "#3298df") {
     this.themeColor = themeColor;
@@ -22,6 +23,7 @@ class View {
       }.bind(this)
     );
     this.#bubble.addEventListener("click", data.bubbleSort.bind(data, this));
+    this.#insert.addEventListener("click", data.insertSort.bind(data, this));
   }
   renderNewArray(array) {
     this.#el.innerHTML = "";
@@ -41,7 +43,7 @@ class View {
       // console.log(this.allBoxes);
     });
   }
-  async switchBubbleArray(curValIndex, nextValIndex) {
+  async switchTwoArrayValues(curValIndex, nextValIndex) {
     const curValElement = this.allBoxes[curValIndex];
     const nextValElement = this.allBoxes[nextValIndex];
     // console.log(curValElement, nextValElement);
@@ -55,8 +57,44 @@ class View {
         nextValElement.style.transform = curValTransform;
         curValElement.classList.remove("active");
         resolve();
-      }, 100)
+      }, 150)
     );
+  }
+  async renderInsertAnimation(oldIndex, newIndex) {
+    this.allBoxes[oldIndex].classList.add("active");
+    await new Promise((resolve) => {
+      setTimeout(
+        function () {
+          this.allBoxes[oldIndex].style.transform =
+            this.allBoxes[newIndex].style.transform;
+          const intermidiateBoxes = this.allBoxes.filter(
+            (box, i) => i >= newIndex && i < oldIndex
+          );
+          console.log(oldIndex, newIndex, intermidiateBoxes);
+          for (const [i, box] of intermidiateBoxes.entries()) {
+            console.log();
+            box.style.transform = `translateX(${
+              Number.parseInt(
+                box.style.transform.replace("translateX(", "").replace(")", "")
+              ) + 110
+            }%)`;
+          }
+
+          //MOVE THE CURRENT ELEMENT TO THE NEW INDEX LOCATION
+
+          this.allBoxes[oldIndex].classList.remove("active");
+
+          data.insert(
+            this.allBoxes[oldIndex],
+            oldIndex,
+            newIndex,
+            this.allBoxes
+          );
+          resolve();
+        }.bind(this),
+        500
+      );
+    });
   }
   async renderSortedArray() {
     for (const box of this.allBoxes) {
@@ -70,7 +108,7 @@ class View {
           }
           resolve();
         }.bind(this),
-        3000
+        5000
       )
     );
   }
