@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300..700&display=swap"
+      rel="stylesheet"
+    />
+    <title>Sorting Algorithm Visualizer</title>
+    <link rel="stylesheet" type="text/css" href="style.css" />
+    <script defer src="js/controller.js" type="module"></script>
+  </head>
+  <body>
+    <main class="main-page">
+      <nav class="main-nav">
+        <h2 class="website-title">Sorting Visualizer</h2>
+
+        <div class="array-selections">
+          <button class="selection-button create-new-array">
+            Create New Array
+          </button>
+          <form class="array-length">
+            <label class="select-array-length-lebel" for="select-array-length"
+              >Select Array Length</label
+            >
+            <input id="select-array-length" type="range" min="3" max="500" />
+          </form>
+        </div>
+        <div class="sorting-methods">
+          <button class="selection-button sorting-method-button">
+            Merge Sort
+          </button>
+          <button class="selection-button sorting-method-button">
+            Heap Sort
+          </button>
+          <button class="selection-button sorting-method-button">
+            Quick Sort
+          </button>
+          <button class="selection-button sorting-method-button">
+            Insertion Sort
+          </button>
+          <button id="bubble" class="selection-button sorting-method-button">
+            Bubble Sort
+          </button>
+        </div>
+      </nav>
+      <div class="output">
+        <div class="all-boxes-container">
+          <div class="all-boxes"></div>
+        </div>
+
+        <div class="base-for-boxes"></div>
+      </div>
+    </main>
+  </body>
+</html>
