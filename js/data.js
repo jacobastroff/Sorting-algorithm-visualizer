@@ -101,6 +101,58 @@ class Data {
 
     return array;
   }
+  async runQuickSort(view) {
+    await this.quickSort(0, this.#curArray.length - 1, view);
+    await view.renderSortedArray();
+  }
+  async quickSort(startIndex, endIndex, view) {
+    if (endIndex <= startIndex) return;
+    const pivot = await this.createPartition(
+      startIndex,
+      endIndex,
+      this.#curArray,
+      view
+    );
+    await this.quickSort(startIndex, pivot - 1, view);
+    await this.quickSort(pivot + 1, endIndex, view);
+  }
+  async createPartition(start, end, array, view) {
+    const pivot = array[end];
+    let i = start - 1;
+    for (let j = start; j < end; j++) {
+      if (array[j] < pivot) {
+        i++;
+        const temp = array[i];
+        array[i] = array[j];
+        array[j] = temp;
+        await new Promise((resolve) =>
+          setTimeout(function () {
+            resolve();
+          }, 12)
+        );
+        console.log(view);
+        console.log(i, j);
+        await view.switchTwoArrayValues(i, j);
+      }
+    }
+    i++;
+    const temp = array[i];
+    array[i] = array[end];
+    array[end] = temp;
+    await new Promise((resolve) =>
+      setTimeout(function () {
+        resolve();
+      }, 500)
+    );
+    console.log(i, end);
+    await view.switchTwoArrayValues(i, end);
+
+    return i;
+  }
+  isSorted(array) {
+    const sortedArray = [...array].sort();
+    return sortedArray.every((val, i) => val === array[i]);
+  }
 }
 
 export default new Data();

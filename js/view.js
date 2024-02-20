@@ -5,6 +5,7 @@ class View {
   #arrayCreator = document.querySelector(".create-new-array");
   #bubble = document.querySelector("#bubble");
   #insert = document.querySelector("#insert");
+  #quickSort = document.querySelector("#quick");
   allBoxes;
   constructor(themeColor = "#3298df") {
     this.themeColor = themeColor;
@@ -24,6 +25,12 @@ class View {
     );
     this.#bubble.addEventListener("click", data.bubbleSort.bind(data, this));
     this.#insert.addEventListener("click", data.insertSort.bind(data, this));
+    console.log(data.getCurArray());
+
+    this.#quickSort.addEventListener(
+      "click",
+      data.runQuickSort.bind(data, this)
+    );
   }
   renderNewArray(array) {
     this.#el.innerHTML = "";
@@ -44,9 +51,10 @@ class View {
     });
   }
   async switchTwoArrayValues(curValIndex, nextValIndex) {
+    console.log(curValIndex, nextValIndex);
     const curValElement = this.allBoxes[curValIndex];
     const nextValElement = this.allBoxes[nextValIndex];
-    // console.log(curValElement, nextValElement);
+    console.log(curValElement, nextValElement);
     this.allBoxes[curValIndex] = this.allBoxes[nextValIndex];
     this.allBoxes[nextValIndex] = curValElement;
     curValElement.classList.add("active");
