@@ -149,9 +149,123 @@ class Data {
 
     return i;
   }
+
   isSorted(array) {
     const sortedArray = [...array].sort();
     return sortedArray.every((val, i) => val === array[i]);
+  }
+  async runMergeSort(view) {
+    const array = this.#curArray.map((val, i) => {
+      return { val: val, indexOriginalArray: i };
+    });
+    view.mergeSetAllBoxes();
+    await this.mergeSort(array, view);
+    console.log(array);
+  }
+  // async mergeSort(array, view) {
+  //   const length = array.length;
+  //   if (length <= 1) return array;
+  //   const middle = Math.trunc(array.length / 2);
+  //   const leftArray = array.slice(0, middle);
+  //   const rightArray = array.slice(middle);
+  //   await this.mergeSort(leftArray, view);
+  //   await this.mergeSort(rightArray, view);
+  //   await this.merge(leftArray, rightArray, array, view);
+  //   for (const [i, el] of array.entries()) {
+  //     await new Promise((resolve) => {
+  //       setTimeout(resolve, 150);
+  //     });
+  //     await view.renderMergeAnimation(
+  //       el.indexOriginalArray,
+  //       i + leftArray.length
+  //     );
+  //   }
+  // }
+  // async merge(leftArray, rightArray, array, view) {
+  //   console.log(leftArray, rightArray);
+  //   const leftSize = Math.floor(array.length / 2);
+  //   const rightSize = array.length - leftSize;
+  //   let i = 0,
+  //     l = 0,
+  //     r = 0; //indices
+  //   while (l < leftSize && r < rightSize) {
+  //     if (leftArray[l].val < rightArray[r]) {
+  //       array[i] = leftArray[l];
+
+  //       i++;
+  //       l++;
+  //     } else {
+  //       array[i] = rightArray[r];
+  //       i++;
+  //       r++;
+  //     }
+  //   }
+  //   while (l < leftSize) {
+  //     array[i] = leftArray[l];
+
+  //     i++;
+  //     l++;
+  //   }
+  //   while (r < rightSize) {
+  //     array[i] = rightArray[r];
+  //     i++;
+  //     r++;
+  //   }
+  // }
+  async heapify(n, i, view) {
+    let largest = i; // Initialize largest as root
+    let left = 2 * i + 1; // left = 2*i + 1
+    let right = 2 * i + 2; // right = 2*i + 2
+
+    // If left child is larger than root
+    if (left < n && this.#curArray[left] > this.#curArray[largest]) {
+      largest = left;
+    }
+
+    // If right child is larger than largest so far
+    if (right < n && this.#curArray[right] > this.#curArray[largest]) {
+      largest = right;
+    }
+
+    // If largest is not root
+    if (largest !== i) {
+      // Swap arr[i] and arr[largest]
+      await new Promise((resolve) => {
+        setTimeout(resolve, 150);
+      });
+      let temp = this.#curArray[i];
+      this.#curArray[i] = this.#curArray[largest];
+      this.#curArray[largest] = temp;
+      await view.switchTwoArrayValues(largest, i);
+
+      // Recursively heapify the affected sub-tree
+      await this.heapify(n, largest, view);
+    }
+  }
+
+  // main function to do heap sort
+  async heapSort(view) {
+    const n = this.#curArray.length;
+
+    // Build heap (rearrange array)
+    for (let i = Math.floor(n / 2) - 1; i >= 0; i--) {
+      await this.heapify(n, i, view);
+    }
+
+    // One by one extract an element from heap
+    for (let i = n - 1; i > 0; i--) {
+      // Move current root to end
+      await new Promise((resolve) => {
+        setTimeout(resolve, 150);
+      });
+      await view.switchTwoArrayValues(0, i);
+      let temp = this.#curArray[0];
+      this.#curArray[0] = this.#curArray[i];
+      this.#curArray[i] = temp;
+
+      // call max heapify on the reduced heap
+      await this.heapify(i, 0, view);
+    }
   }
 }
 

@@ -6,6 +6,8 @@ class View {
   #bubble = document.querySelector("#bubble");
   #insert = document.querySelector("#insert");
   #quickSort = document.querySelector("#quick");
+  #merge = document.querySelector("#merge");
+  #heap = document.querySelector("#heap");
   allBoxes;
   constructor(themeColor = "#3298df") {
     this.themeColor = themeColor;
@@ -31,6 +33,7 @@ class View {
       "click",
       data.runQuickSort.bind(data, this)
     );
+    this.#heap.addEventListener("click", data.heapSort.bind(data, this));
   }
   renderNewArray(array) {
     this.#el.innerHTML = "";
@@ -104,6 +107,34 @@ class View {
       );
     });
   }
+  mergeSetAllBoxes() {
+    this.allBoxes = this.allBoxes.map((el) => {
+      return {
+        el: el,
+        transformOriginalArray: el.style.transform,
+      };
+    });
+  }
+  async renderMergeAnimation(indexFrom, indexTo) {
+    console.log(indexFrom, indexTo);
+    console.log(this.allBoxes);
+
+    this.allBoxes[indexFrom].el.classList.add("active");
+    await new Promise((resolve) => {
+      setTimeout(
+        function () {
+          this.allBoxes[indexFrom].el.style.transform =
+            this.allBoxes[indexTo].style.transform;
+
+          this.allBoxes[indexFrom].el.classList.remove("active");
+
+          resolve();
+        }.bind(this),
+        150
+      );
+    });
+  }
+
   async renderSortedArray() {
     for (const box of this.allBoxes) {
       box.style.backgroundColor = "purple";

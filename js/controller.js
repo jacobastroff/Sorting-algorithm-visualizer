@@ -13,3 +13,5 @@ view.renderNewArray(data.getCurArray());
 console.log(data.insert(3, 3, 1, [1, 8, 4, 5, 3, 10, 2]));
 // console.log(data.quickSort(0, 20, view));
 // data.quickSort(0, data.getCurArray().length - 1, view);
+
+// Example usage:
