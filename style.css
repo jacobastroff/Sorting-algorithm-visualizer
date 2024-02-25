@@ -17,13 +17,19 @@ body {
   font-size: 1.8rem;
   color: #fff;
 }
-.select-array-length-lebel {
+.select-label {
   color: #fff;
   font-weight: bold;
 }
-.array-length {
+.inputs {
   display: flex;
+  flex-direction: column;
+  justify-content: center;
   align-items: center;
+  gap: 1rem;
+}
+.input {
+  display: flex;
   gap: 1rem;
 }
 .main-nav {

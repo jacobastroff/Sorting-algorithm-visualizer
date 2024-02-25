@@ -2,12 +2,15 @@ import data from "./data.js";
 class View {
   #el = document.querySelector(".all-boxes");
   #arrayModifier = document.querySelector("#select-array-length");
+  #speedModifier = document.querySelector("#select-sorting-speed");
   #arrayCreator = document.querySelector(".create-new-array");
   #bubble = document.querySelector("#bubble");
   #insert = document.querySelector("#insert");
   #quickSort = document.querySelector("#quick");
   #merge = document.querySelector("#merge");
   #heap = document.querySelector("#heap");
+
+  #sortingSpeed;
   allBoxes;
   constructor(themeColor = "#3298df") {
     this.themeColor = themeColor;
@@ -16,6 +19,13 @@ class View {
       function () {
         data.modifyArraySize(Number(this.#arrayModifier.value));
         this.renderNewArray(data.getCurArray());
+      }.bind(this)
+    );
+    this.#speedModifier.addEventListener(
+      "change",
+      function () {
+        this.#sortingSpeed = 500 - this.#speedModifier.value;
+        console.log(this.#sortingSpeed);
       }.bind(this)
     );
     this.#arrayCreator.addEventListener(
@@ -33,7 +43,14 @@ class View {
       "click",
       data.runQuickSort.bind(data, this)
     );
-    this.#heap.addEventListener("click", data.heapSort.bind(data, this));
+    this.#heap.addEventListener("click", data.runHeapSort.bind(data, this));
+    this.#merge.addEventListener("click", data.runMergeSort.bind(data, this));
+  }
+  getAllBoxes() {
+    return this.allBoxes;
+  }
+  getSortingSpeed() {
+    return this.#sortingSpeed;
   }
   renderNewArray(array) {
     this.#el.innerHTML = "";
@@ -50,6 +67,7 @@ class View {
       // console.log("DONE");
       this.#el.insertAdjacentHTML("beforeend", html);
       this.allBoxes = [...document.querySelectorAll(".box")];
+
       // console.log(this.allBoxes);
     });
   }
@@ -68,7 +86,7 @@ class View {
         nextValElement.style.transform = curValTransform;
         curValElement.classList.remove("active");
         resolve();
-      }, 150)
+      }, this.#sortingSpeed / 5)
     );
   }
   async renderInsertAnimation(oldIndex, newIndex) {
@@ -103,34 +121,24 @@ class View {
           );
           resolve();
         }.bind(this),
-        500
+        this.#sortingSpeed / 2
       );
     });
   }
-  mergeSetAllBoxes() {
-    this.allBoxes = this.allBoxes.map((el) => {
-      return {
-        el: el,
-        transformOriginalArray: el.style.transform,
-      };
-    });
-  }
-  async renderMergeAnimation(indexFrom, indexTo) {
-    console.log(indexFrom, indexTo);
-    console.log(this.allBoxes);
 
-    this.allBoxes[indexFrom].el.classList.add("active");
+  async runMergeAnimation(indexTransformed, val) {
+    console.log(indexTransformed, val, this.allBoxes.length);
+    this.allBoxes[indexTransformed].classList.add("active");
     await new Promise((resolve) => {
       setTimeout(
         function () {
-          this.allBoxes[indexFrom].el.style.transform =
-            this.allBoxes[indexTo].style.transform;
+          this.allBoxes[indexTransformed].style.transform = val.style.transform;
 
-          this.allBoxes[indexFrom].el.classList.remove("active");
+          this.allBoxes[indexTransformed].classList.remove("active");
 
           resolve();
         }.bind(this),
-        150
+        2
       );
     });
   }

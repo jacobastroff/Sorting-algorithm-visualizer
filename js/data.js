@@ -1,5 +1,8 @@
 class Data {
   #curArray;
+  delay(delay) {
+    return new Promise((resolve) => setTimeout(resolve, delay));
+  }
   createAndSetCurArray(arraySize) {
     this.#curArray = Array.from(
       new Array(arraySize),
@@ -27,6 +30,7 @@ class Data {
   }
   async bubbleSort(view) {
     // console.log(this.#curArray);
+    const delayTime = view.getSortingSpeed() / 2;
     for (const _ of this.#curArray) {
       // await new Promise((resolve) =>
       //   setTimeout(function () {
@@ -39,7 +43,7 @@ class Data {
           await new Promise((resolve) =>
             setTimeout(function () {
               resolve();
-            }, 150)
+            }, delayTime)
           );
           this.#curArray[i] = b;
           this.#curArray[i + 1] = a;
@@ -53,6 +57,8 @@ class Data {
   }
   async insertSort(view) {
     // console.log(this.#curArray);
+    const delayTime = view.getSortingSpeed() / 2;
+
     for (const [i, el] of this.#curArray.entries()) {
       // console.log(el);
       let position = -1; //INVALID POSITION TO START OFF
@@ -69,7 +75,7 @@ class Data {
         await new Promise((resolve) =>
           setTimeout(function () {
             resolve();
-          }, 500)
+          }, delayTime)
         );
         this.insert(el, i, position, this.#curArray);
         // console.log(this.#curArray);
@@ -117,6 +123,7 @@ class Data {
     await this.quickSort(pivot + 1, endIndex, view);
   }
   async createPartition(start, end, array, view) {
+    const delayTime = view.getSortingSpeed() / 2;
     const pivot = array[end];
     let i = start - 1;
     for (let j = start; j < end; j++) {
@@ -128,7 +135,7 @@ class Data {
         await new Promise((resolve) =>
           setTimeout(function () {
             resolve();
-          }, 12)
+          }, delayTime)
         );
         console.log(view);
         console.log(i, j);
@@ -142,7 +149,7 @@ class Data {
     await new Promise((resolve) =>
       setTimeout(function () {
         resolve();
-      }, 500)
+      }, delayTime)
     );
     console.log(i, end);
     await view.switchTwoArrayValues(i, end);
@@ -155,64 +162,124 @@ class Data {
     return sortedArray.every((val, i) => val === array[i]);
   }
   async runMergeSort(view) {
-    const array = this.#curArray.map((val, i) => {
-      return { val: val, indexOriginalArray: i };
-    });
-    view.mergeSetAllBoxes();
-    await this.mergeSort(array, view);
-    console.log(array);
+    const boxArray = view.getAllBoxes();
+    const startIndex = 0;
+    const endIndex = this.#curArray.length - 1;
+    console.log("HELLO");
+    await this.mergeSortHelper(
+      this.#curArray,
+      boxArray,
+      startIndex,
+      endIndex,
+      this.#curArray.slice(),
+      [...boxArray],
+      view
+    );
   }
-  // async mergeSort(array, view) {
-  //   const length = array.length;
-  //   if (length <= 1) return array;
-  //   const middle = Math.trunc(array.length / 2);
-  //   const leftArray = array.slice(0, middle);
-  //   const rightArray = array.slice(middle);
-  //   await this.mergeSort(leftArray, view);
-  //   await this.mergeSort(rightArray, view);
-  //   await this.merge(leftArray, rightArray, array, view);
-  //   for (const [i, el] of array.entries()) {
-  //     await new Promise((resolve) => {
-  //       setTimeout(resolve, 150);
-  //     });
-  //     await view.renderMergeAnimation(
-  //       el.indexOriginalArray,
-  //       i + leftArray.length
-  //     );
-  //   }
-  // }
-  // async merge(leftArray, rightArray, array, view) {
-  //   console.log(leftArray, rightArray);
-  //   const leftSize = Math.floor(array.length / 2);
-  //   const rightSize = array.length - leftSize;
-  //   let i = 0,
-  //     l = 0,
-  //     r = 0; //indices
-  //   while (l < leftSize && r < rightSize) {
-  //     if (leftArray[l].val < rightArray[r]) {
-  //       array[i] = leftArray[l];
+  async mergeSortHelper(
+    mainArray,
+    boxArray,
+    startIdx,
+    endIdx,
+    auxiliaryArray,
+    boxAuxiliaryArray,
+    view
+  ) {
+    if (startIdx === endIdx) return;
+    const middleIdx = Math.floor((startIdx + endIdx) / 2);
+    await this.mergeSortHelper(
+      auxiliaryArray,
+      boxAuxiliaryArray,
+      startIdx,
+      middleIdx,
+      mainArray,
+      boxArray,
+      view
+    );
+    await this.mergeSortHelper(
+      auxiliaryArray,
+      boxAuxiliaryArray,
+      middleIdx + 1,
+      endIdx,
+      mainArray,
+      boxArray,
+      view
+    );
+    await this.doMerge(
+      mainArray,
+      boxArray,
+      startIdx,
+      middleIdx,
+      endIdx,
+      auxiliaryArray,
+      boxAuxiliaryArray,
+      view
+    );
+  }
 
-  //       i++;
-  //       l++;
-  //     } else {
-  //       array[i] = rightArray[r];
-  //       i++;
-  //       r++;
-  //     }
-  //   }
-  //   while (l < leftSize) {
-  //     array[i] = leftArray[l];
+  async doMerge(
+    mainArray,
+    boxArray,
+    startIdx,
+    middleIdx,
+    endIdx,
+    auxiliaryArray,
+    boxAuxiliaryArray,
+    view
+  ) {
+    let k = startIdx;
+    let i = startIdx;
+    let j = middleIdx + 1;
+    while (i <= middleIdx && j <= endIdx) {
+      // These are the values that we're comparing; we push them once
+      // to change their color.
 
-  //     i++;
-  //     l++;
-  //   }
-  //   while (r < rightSize) {
-  //     array[i] = rightArray[r];
-  //     i++;
-  //     r++;
-  //   }
-  // }
+      // These are the values that we're comparing; we push them a second
+      // time to revert their color.
+
+      if (auxiliaryArray[i] <= auxiliaryArray[j]) {
+        // We overwrite the value at index k in the original array with the
+        // value at index i in the auxiliary array.
+        await this.delay(2);
+        await view.runMergeAnimation(k, boxAuxiliaryArray[i]);
+        mainArray[k++] = auxiliaryArray[i++];
+        boxArray[k++] = boxAuxiliaryArray[i++];
+      } else {
+        // We overwrite the value at index k in the original array with the
+        // value at index j in the auxiliary array.
+        await this.delay(2);
+
+        await view.runMergeAnimation(k, boxAuxiliaryArray[j]);
+
+        mainArray[k++] = auxiliaryArray[j++];
+        boxArray[k++] = boxAuxiliaryArray[i++];
+      }
+    }
+    while (i <= middleIdx) {
+      // We overwrite the value at index k in the original array with the
+      // value at index i in the auxiliary array.
+      await this.delay(2);
+
+      await view.runMergeAnimation(k, boxAuxiliaryArray[i]);
+
+      mainArray[k++] = auxiliaryArray[i++];
+      boxArray[k++] = boxAuxiliaryArray[i++];
+    }
+    while (j <= endIdx) {
+      await this.delay(2);
+
+      await view.runMergeAnimation(k, boxAuxiliaryArray[j]);
+
+      mainArray[k++] = auxiliaryArray[j++];
+      boxArray[k++] = boxAuxiliaryArray[i++];
+    }
+  }
+  async runHeapSort(view) {
+    await this.heapSort(view);
+    await view.renderSortedArray();
+  }
   async heapify(n, i, view) {
+    const delayTime = view.getSortingSpeed() / 2;
     let largest = i; // Initialize largest as root
     let left = 2 * i + 1; // left = 2*i + 1
     let right = 2 * i + 2; // right = 2*i + 2
@@ -231,7 +298,7 @@ class Data {
     if (largest !== i) {
       // Swap arr[i] and arr[largest]
       await new Promise((resolve) => {
-        setTimeout(resolve, 150);
+        setTimeout(resolve, delayTime);
       });
       let temp = this.#curArray[i];
       this.#curArray[i] = this.#curArray[largest];
@@ -245,6 +312,8 @@ class Data {
 
   // main function to do heap sort
   async heapSort(view) {
+    const delayTime = view.getSortingSpeed() / 2;
+
     const n = this.#curArray.length;
 
     // Build heap (rearrange array)
@@ -256,7 +325,7 @@ class Data {
     for (let i = n - 1; i > 0; i--) {
       // Move current root to end
       await new Promise((resolve) => {
-        setTimeout(resolve, 150);
+        setTimeout(resolve, delayTime);
       });
       await view.switchTwoArrayValues(0, i);
       let temp = this.#curArray[0];
