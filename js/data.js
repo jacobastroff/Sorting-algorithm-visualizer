@@ -30,7 +30,7 @@ class Data {
   }
   async bubbleSort(view) {
     // console.log(this.#curArray);
-    const delayTime = view.getSortingSpeed() / 2;
+    view.disableDisruptiveModules();
     for (const _ of this.#curArray) {
       // await new Promise((resolve) =>
       //   setTimeout(function () {
@@ -38,6 +38,8 @@ class Data {
       //   }, 200)
       // );
       for (const [i, a] of this.#curArray.entries()) {
+        const delayTime = view.getSortingSpeed() / 2;
+
         const b = this.#curArray[i + 1];
         if (a - b > 0) {
           await new Promise((resolve) =>
@@ -54,10 +56,12 @@ class Data {
     }
     // console.log(this.#curArray);
     await view.renderSortedArray();
+    view.enableAllModules();
   }
   async insertSort(view) {
     // console.log(this.#curArray);
     const delayTime = view.getSortingSpeed() / 2;
+    view.disableDisruptiveModules();
 
     for (const [i, el] of this.#curArray.entries()) {
       // console.log(el);
@@ -83,6 +87,7 @@ class Data {
       }
     }
     await view.renderSortedArray();
+    view.enableAllModules();
     return this.#curArray;
   }
 
@@ -110,6 +115,7 @@ class Data {
   async runQuickSort(view) {
     await this.quickSort(0, this.#curArray.length - 1, view);
     await view.renderSortedArray();
+    view.enableAllModules();
   }
   async quickSort(startIndex, endIndex, view) {
     if (endIndex <= startIndex) return;
@@ -275,8 +281,10 @@ class Data {
     }
   }
   async runHeapSort(view) {
+    view.disableDisruptiveModules();
     await this.heapSort(view);
     await view.renderSortedArray();
+    view.enableAllModules();
   }
   async heapify(n, i, view) {
     const delayTime = view.getSortingSpeed() / 2;

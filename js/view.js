@@ -52,6 +52,19 @@ class View {
   getSortingSpeed() {
     return this.#sortingSpeed;
   }
+  disableDisruptiveModules() {
+    document
+      .querySelectorAll("*")
+      .forEach((el) => (el.style.pointerEvents = "none"));
+    document
+      .querySelectorAll(".input-non-disruptive * ")
+      .forEach((el) => (el.style.pointerEvents = "all"));
+  }
+  enableAllModules() {
+    document
+      .querySelectorAll("*")
+      .forEach((el) => (el.style.pointerEvents = "all"));
+  }
   renderNewArray(array) {
     this.#el.innerHTML = "";
     array.forEach((val, i, array) => {
