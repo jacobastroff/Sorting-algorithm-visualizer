@@ -32,6 +32,8 @@ class Data {
     // console.log(this.#curArray);
     view.disableDisruptiveModules();
     for (const _ of this.#curArray) {
+      const delayTime = view.getSortingSpeed() / 2;
+
       // await new Promise((resolve) =>
       //   setTimeout(function () {
       //     resolve();
@@ -172,6 +174,7 @@ class Data {
     const startIndex = 0;
     const endIndex = this.#curArray.length - 1;
     console.log("HELLO");
+
     await this.mergeSortHelper(
       this.#curArray,
       boxArray,
@@ -221,6 +224,7 @@ class Data {
       boxAuxiliaryArray,
       view
     );
+    console.log(this.#curArray);
   }
 
   async doMerge(
@@ -237,49 +241,41 @@ class Data {
     let i = startIdx;
     let j = middleIdx + 1;
     while (i <= middleIdx && j <= endIdx) {
-      // These are the values that we're comparing; we push them once
-      // to change their color.
-
-      // These are the values that we're comparing; we push them a second
-      // time to revert their color.
-
       if (auxiliaryArray[i] <= auxiliaryArray[j]) {
-        // We overwrite the value at index k in the original array with the
-        // value at index i in the auxiliary array.
-        await this.delay(2);
+        await this.delay(view.getSortingSpeed() / 2);
         await view.runMergeAnimation(k, boxAuxiliaryArray[i]);
-        mainArray[k++] = auxiliaryArray[i++];
+
+        mainArray[k] = auxiliaryArray[i];
         boxArray[k++] = boxAuxiliaryArray[i++];
       } else {
-        // We overwrite the value at index k in the original array with the
-        // value at index j in the auxiliary array.
-        await this.delay(2);
-
+        await this.delay(view.getSortingSpeed() / 2);
         await view.runMergeAnimation(k, boxAuxiliaryArray[j]);
 
-        mainArray[k++] = auxiliaryArray[j++];
-        boxArray[k++] = boxAuxiliaryArray[i++];
+        mainArray[k] = auxiliaryArray[j];
+        boxArray[k++] = boxAuxiliaryArray[j++];
       }
     }
     while (i <= middleIdx) {
-      // We overwrite the value at index k in the original array with the
-      // value at index i in the auxiliary array.
-      await this.delay(2);
+      await this.delay(view.getSortingSpeed() / 2);
+      await view.runMergeAnimation(k, boxAuxiliaryArray[i]); // Moved inside the loop
 
-      await view.runMergeAnimation(k, boxAuxiliaryArray[i]);
+      mainArray[k] = auxiliaryArray[i];
 
-      mainArray[k++] = auxiliaryArray[i++];
-      boxArray[k++] = boxAuxiliaryArray[i++];
+      boxArray[k] = boxAuxiliaryArray[i]; // Corrected indexing
+      k++; // Increment k after setting the value
+      i++; // Increment i
     }
     while (j <= endIdx) {
-      await this.delay(2);
+      await this.delay(view.getSortingSpeed() / 2);
+      await view.runMergeAnimation(k, boxAuxiliaryArray[j]); // Moved inside the loop
 
-      await view.runMergeAnimation(k, boxAuxiliaryArray[j]);
-
-      mainArray[k++] = auxiliaryArray[j++];
-      boxArray[k++] = boxAuxiliaryArray[i++];
+      mainArray[k] = auxiliaryArray[j];
+      boxArray[k] = boxAuxiliaryArray[j]; // Corrected indexing
+      k++; // Increment k after setting the value
+      j++; // Increment j
     }
   }
+
   async runHeapSort(view) {
     view.disableDisruptiveModules();
     await this.heapSort(view);

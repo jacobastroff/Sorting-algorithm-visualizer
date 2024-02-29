@@ -139,15 +139,43 @@ class View {
     });
   }
 
+  // async runMergeAnimation(indexTransformed, val) {
+  //   console.log(this.allBoxes[indexTransformed], indexTransformed);
+  //   this.allBoxes[indexTransformed].classList.add("active");
+  //   await new Promise((resolve) => {
+  //     setTimeout(
+  //       function () {
+  //         // Assuming val contains the transformation information
+  //         console.log(val.style.transform.startsWith("translateX"));
+
+  //         this.allBoxes[indexTransformed].style.transform = val.style.transform; //This code causes the problem
+
+  //         this.allBoxes[indexTransformed].classList.remove("active");
+  //         // val.classList.remove("active");
+
+  //         resolve();
+  //       }.bind(this),
+  //       2
+  //     );
+  //   });
+  // }
+
   async runMergeAnimation(indexTransformed, val) {
-    console.log(indexTransformed, val, this.allBoxes.length);
+    console.log(this.allBoxes[indexTransformed], indexTransformed);
     this.allBoxes[indexTransformed].classList.add("active");
     await new Promise((resolve) => {
       setTimeout(
         function () {
-          this.allBoxes[indexTransformed].style.transform = val.style.transform;
+          // Assuming val contains the transformation information
+          console.log(val.style.transform.startsWith("translateX"));
+
+          this.allBoxes[indexTransformed].style.transform = `translateX(${
+            indexTransformed * 110
+          }%)`; //This code causes the problem
+          console.log(`Animated box to index(${indexTransformed})`);
 
           this.allBoxes[indexTransformed].classList.remove("active");
+          // val.classList.remove("active");
 
           resolve();
         }.bind(this),
