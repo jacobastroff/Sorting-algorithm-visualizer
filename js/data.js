@@ -247,7 +247,7 @@ class Data {
         await this.delay(view.getSortingSpeed() / 2);
         mainArray[k] = auxiliaryArray[i];
         boxArray[k++] = boxAuxiliaryArray[i++];
-        await view.runMergeAnimation(k, mainArray);
+        await view.runMergeAnimation(k, mainArray, boxArray);
 
         console.log(mainArray);
       } else {
@@ -255,7 +255,7 @@ class Data {
         console.log(boxAuxiliaryArray[j]);
         mainArray[k] = auxiliaryArray[j];
         boxArray[k++] = boxAuxiliaryArray[j++];
-        await view.runMergeAnimation(k, mainArray);
+        await view.runMergeAnimation(k, mainArray, boxArray);
       }
     }
     while (i <= middleIdx) {
@@ -265,7 +265,7 @@ class Data {
       mainArray[k] = auxiliaryArray[i];
 
       boxArray[k] = boxAuxiliaryArray[i]; // Corrected indexing
-      await view.runMergeAnimation(k, mainArray); // Moved inside the loop
+      await view.runMergeAnimation(k, mainArray, boxArray); // Moved inside the loop
 
       k++; // Increment k after setting the value
       i++; // Increment i
@@ -275,7 +275,7 @@ class Data {
 
       mainArray[k] = auxiliaryArray[j];
       boxArray[k] = boxAuxiliaryArray[j]; // Corrected indexing
-      await view.runMergeAnimation(k, mainArray); // Moved inside the loop
+      await view.runMergeAnimation(k, mainArray, boxArray); // Moved inside the loop
 
       k++; // Increment k after setting the value
       j++; // Increment j

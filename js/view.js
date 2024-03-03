@@ -65,28 +65,29 @@ class View {
       .querySelectorAll("*")
       .forEach((el) => (el.style.pointerEvents = "all"));
   }
-  renderNewArray(array, isThisMerge = false) {
-    if (!isThisMerge) {
-      this.#el.innerHTML = "";
-      array.forEach((val, i, array) => {
-        const html = `<div style=" width: ${
-          (window.innerWidth / array.length -
-            (window.innerWidth / array.length) * 0.1) /
-          10
-        }rem; height: ${val / 1.5}rem; transform:translateX(${i * 110}%); ${
-          this.themeColor && this.themeColor !== "#3298df"
-            ? `background-color: ${this.themeColor}`
-            : ""
-        }" class="box">&nbsp;</div>`;
-        // console.log("DONE");
-        this.#el.insertAdjacentHTML("beforeend", html);
-
+  renderNewArray(array, boxArray = false) {
+    // if (!isThisMerge) {
+    this.#el.innerHTML = "";
+    array.forEach((val, i, array) => {
+      const html = `<div style=" width: ${
+        (window.innerWidth / array.length -
+          (window.innerWidth / array.length) * 0.1) /
+        10
+      }rem; height: ${val / 1.5}rem; transform:translateX(${i * 110}%); ${
+        this.themeColor && this.themeColor !== "#3298df"
+          ? `background-color: ${this.themeColor}`
+          : ""
+      }" class="box">&nbsp;</div>`;
+      // console.log("DONE");
+      this.#el.insertAdjacentHTML("beforeend", html);
+      if (boxArray) {
+        this.allBoxes = boxArray;
+      } else {
         this.allBoxes = [...document.querySelectorAll(".box")];
+      }
 
-        // console.log(this.allBoxes);
-      });
-    } else {
-    }
+      // console.log(this.allBoxes);
+    });
   }
   async switchTwoArrayValues(curValIndex, nextValIndex) {
     console.log(curValIndex, nextValIndex);
@@ -164,7 +165,7 @@ class View {
   //   });
   // }
 
-  async runMergeAnimation(indexTransformed, array) {
+  async runMergeAnimation(indexTransformed, array, boxArray) {
     console.log(this.allBoxes[indexTransformed], indexTransformed);
     this.allBoxes[indexTransformed].classList.add("active");
     await new Promise((resolve) => {
@@ -183,7 +184,7 @@ class View {
 
           // console.log(`Animated box to index(${indexTransformed})`);
 
-          this.renderNewArray(array, true);
+          this.renderNewArray(array, boxArray);
 
           this.allBoxes[indexTransformed].classList.remove("active");
           // val.classList.remove("active");
