@@ -167,11 +167,16 @@ class View {
       setTimeout(
         function () {
           // Assuming val contains the transformation information
-          console.log(val.style.transform.startsWith("translateX"));
 
+          console.log(
+            this.allBoxes[indexTransformed].style.transform ===
+              `translateX(${indexTransformed * 110}%)`
+          );
           this.allBoxes[indexTransformed].style.transform = `translateX(${
             indexTransformed * 110
           }%)`; //This code causes the problem
+          // this.allBoxes[indexTransformed].style.height = val.style.height;
+
           console.log(`Animated box to index(${indexTransformed})`);
 
           this.allBoxes[indexTransformed].classList.remove("active");
@@ -179,7 +184,7 @@ class View {
 
           resolve();
         }.bind(this),
-        2
+        this.#sortingSpeed / 2
       );
     });
   }
