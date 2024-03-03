@@ -65,24 +65,28 @@ class View {
       .querySelectorAll("*")
       .forEach((el) => (el.style.pointerEvents = "all"));
   }
-  renderNewArray(array) {
-    this.#el.innerHTML = "";
-    array.forEach((val, i, array) => {
-      const html = `<div style=" width: ${
-        (window.innerWidth / array.length -
-          (window.innerWidth / array.length) * 0.1) /
-        10
-      }rem; height: ${val / 1.5}rem; transform:translateX(${i * 110}%); ${
-        this.themeColor && this.themeColor !== "#3298df"
-          ? `background-color: ${this.themeColor}`
-          : ""
-      }" class="box">&nbsp;</div>`;
-      // console.log("DONE");
-      this.#el.insertAdjacentHTML("beforeend", html);
-      this.allBoxes = [...document.querySelectorAll(".box")];
+  renderNewArray(array, isThisMerge = false) {
+    if (!isThisMerge) {
+      this.#el.innerHTML = "";
+      array.forEach((val, i, array) => {
+        const html = `<div style=" width: ${
+          (window.innerWidth / array.length -
+            (window.innerWidth / array.length) * 0.1) /
+          10
+        }rem; height: ${val / 1.5}rem; transform:translateX(${i * 110}%); ${
+          this.themeColor && this.themeColor !== "#3298df"
+            ? `background-color: ${this.themeColor}`
+            : ""
+        }" class="box">&nbsp;</div>`;
+        // console.log("DONE");
+        this.#el.insertAdjacentHTML("beforeend", html);
 
-      // console.log(this.allBoxes);
-    });
+        this.allBoxes = [...document.querySelectorAll(".box")];
+
+        // console.log(this.allBoxes);
+      });
+    } else {
+    }
   }
   async switchTwoArrayValues(curValIndex, nextValIndex) {
     console.log(curValIndex, nextValIndex);
@@ -160,7 +164,7 @@ class View {
   //   });
   // }
 
-  async runMergeAnimation(indexTransformed, val) {
+  async runMergeAnimation(indexTransformed, array) {
     console.log(this.allBoxes[indexTransformed], indexTransformed);
     this.allBoxes[indexTransformed].classList.add("active");
     await new Promise((resolve) => {
@@ -168,16 +172,18 @@ class View {
         function () {
           // Assuming val contains the transformation information
 
-          console.log(
-            this.allBoxes[indexTransformed].style.transform ===
-              `translateX(${indexTransformed * 110}%)`
-          );
-          this.allBoxes[indexTransformed].style.transform = `translateX(${
-            indexTransformed * 110
-          }%)`; //This code causes the problem
-          // this.allBoxes[indexTransformed].style.height = val.style.height;
+          // console.log(
+          //   this.allBoxes[indexTransformed].style.transform ===
+          //     `translateX(${indexTransformed * 110}%)`
+          // );
+          // this.allBoxes[indexTransformed].style.transform = `translateX(${
+          //   indexTransformed * 110
+          // }%)`; //This code causes the problem
+          // // this.allBoxes[indexTransformed].style.height = val.style.height;
 
-          console.log(`Animated box to index(${indexTransformed})`);
+          // console.log(`Animated box to index(${indexTransformed})`);
+
+          this.renderNewArray(array, true);
 
           this.allBoxes[indexTransformed].classList.remove("active");
           // val.classList.remove("active");
