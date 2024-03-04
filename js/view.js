@@ -170,7 +170,7 @@ class View {
     this.allBoxes[indexTransformed].classList.add("active");
     await new Promise((resolve) => {
       setTimeout(
-        function () {
+        async function () {
           // Assuming val contains the transformation information
 
           // console.log(
@@ -185,6 +185,7 @@ class View {
           // console.log(`Animated box to index(${indexTransformed})`);
 
           this.renderNewArray(array, boxArray);
+          // await new Promise((resolve) => set/Timeout(resolve, 0)); // This line forces the DOM updates to flush
 
           this.allBoxes[indexTransformed].classList.remove("active");
           // val.classList.remove("active");
