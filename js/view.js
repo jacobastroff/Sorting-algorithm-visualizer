@@ -163,7 +163,7 @@ class View {
   //   });
   // }
 
-  async runMergeAnimation(indexTransformed, array, boxArray) {
+  async runMergeAnimation(indexTransformed, array) {
     console.log(this.allBoxes[indexTransformed], indexTransformed);
     this.allBoxes[indexTransformed].classList.add("active");
     await new Promise((resolve) => {
@@ -182,7 +182,7 @@ class View {
 
           // console.log(`Animated box to index(${indexTransformed})`);
 
-          this.renderNewArray(array, boxArray);
+          this.renderNewArray(array);
 
           // await new Promise((resolve) => setTimeout(resolve, 0)); // This line forces the DOM updates to flush
 
@@ -206,6 +206,7 @@ class View {
           for (const box of this.allBoxes) {
             box.style.backgroundColor = this.themeColor;
           }
+          console.log("Done");
           resolve();
         }.bind(this),
         5000
