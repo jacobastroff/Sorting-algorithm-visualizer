@@ -115,6 +115,7 @@ class Data {
     return array;
   }
   async runQuickSort(view) {
+    view.disableDisruptiveModules();
     await this.quickSort(0, this.#curArray.length - 1, view);
     await view.renderSortedArray();
     view.enableAllModules();
@@ -170,162 +171,61 @@ class Data {
     return sortedArray.every((val, i) => val === array[i]);
   }
   async runMergeSort(view) {
-    const boxArray = view.getAllBoxes();
     const startIndex = 0;
     const endIndex = this.#curArray.length - 1;
-    console.log("HELLO");
-
-    await this.mergeSortHelper(
-      this.#curArray,
-      boxArray,
-      startIndex,
-      endIndex,
-      this.#curArray.slice(),
-      [...boxArray],
-      view
-    );
+    await this.mergeSortHelper(this.#curArray, startIndex, endIndex, view);
+    view.disableDisruptiveModules();
+    await view.renderSortedArray();
+    view.enableAllModules();
   }
-  async mergeSortHelper(
-    mainArray,
-    boxArray,
-    startIdx,
-    endIdx,
-    auxiliaryArray,
-    boxAuxiliaryArray,
-    view
-  ) {
-    if (startIdx === endIdx) return;
+
+  // Recursively splits the array and calls the merge function
+  async mergeSortHelper(mainArray, startIdx, endIdx, view) {
+    if (startIdx >= endIdx) return; // Base case: the array is now a single element
     const middleIdx = Math.floor((startIdx + endIdx) / 2);
-    await this.mergeSortHelper(
-      auxiliaryArray,
-      boxAuxiliaryArray,
-      startIdx,
-      middleIdx,
-      mainArray,
-      boxArray,
-      view
-    );
-    await this.mergeSortHelper(
-      auxiliaryArray,
-      boxAuxiliaryArray,
-      middleIdx + 1,
-      endIdx,
-      mainArray,
-      boxArray,
-      view
-    );
-
-    await this.doMerge(
-      mainArray,
-      boxArray,
-      startIdx,
-      middleIdx,
-      endIdx,
-      auxiliaryArray,
-      boxAuxiliaryArray,
-      view
-    );
-
-    console.log(this.#curArray);
+    await this.mergeSortHelper(mainArray, startIdx, middleIdx, view); // Sort the first half
+    await this.mergeSortHelper(mainArray, middleIdx + 1, endIdx, view); // Sort the second half
+    await this.doMerge(mainArray, startIdx, middleIdx, endIdx, view); // Merge the sorted halves
   }
 
-  async doMerge(
-    mainArray,
-    boxArray,
-    startIdx,
-    middleIdx,
-    endIdx,
-    auxiliaryArray,
-    boxAuxiliaryArray,
-    view
-  ) {
-    let k = startIdx;
-    let i = startIdx;
-    let j = middleIdx + 1;
-    while (i <= middleIdx && j <= endIdx) {
+  // Merges two sorted halves of the array
+  async doMerge(mainArray, startIdx, middleIdx, endIdx, view) {
+    let auxiliaryArray = mainArray.slice(startIdx, endIdx + 1); // Copy the segment to be merged
+    let i = 0; // Initial index of the first half in auxiliaryArray
+    let j = middleIdx + 1 - startIdx; // Initial index of the second half in auxiliaryArray
+    let k = startIdx; // Initial index of the merged array
+
+    while (i <= middleIdx - startIdx && j <= endIdx - startIdx) {
       if (auxiliaryArray[i] <= auxiliaryArray[j]) {
-        await this.delay(view.getSortingSpeed() / 2);
-        await view.runMergeAnimation(k, boxAuxiliaryArray[i]);
         mainArray[k++] = auxiliaryArray[i++];
-        // boxArray[k++] = boxAuxiliaryArray[i++];
-        console.log(mainArray);
-      } else {
         await this.delay(view.getSortingSpeed() / 2);
-        await view.runMergeAnimation(k, boxAuxiliaryArray[j]);
-        console.log(boxAuxiliaryArray[j]);
+        await view.runMergeAnimation(k - 1, mainArray);
+      } else {
         mainArray[k++] = auxiliaryArray[j++];
-        // boxArray[k++] = boxAuxiliaryArray[j++];
+        await this.delay(view.getSortingSpeed() / 2);
+        await view.runMergeAnimation(k - 1, mainArray);
       }
     }
-    while (i <= middleIdx) {
+
+    // Copy the remaining elements of the first half, if any
+    while (i <= middleIdx - startIdx) {
+      mainArray[k++] = auxiliaryArray[i++];
       await this.delay(view.getSortingSpeed() / 2);
-      await view.runMergeAnimation(k, boxAuxiliaryArray[i]); // Moved inside the loop
-      console.log(boxAuxiliaryArray[i]);
-
-      mainArray[k] = auxiliaryArray[i];
-
-      // boxArray[k] = boxAuxiliaryArray[i]; // Corrected indexing
-      k++; // Increment k after setting the value
-      i++; // Increment i
+      await view.runMergeAnimation(k - 1, mainArray);
     }
-    while (j <= endIdx) {
+
+    // Copy the remaining elements of the second half, if any
+    while (j <= endIdx - startIdx) {
+      mainArray[k++] = auxiliaryArray[j++];
       await this.delay(view.getSortingSpeed() / 2);
-      await view.runMergeAnimation(k, boxAuxiliaryArray[j]); // Moved inside the loop
-
-      mainArray[k] = auxiliaryArray[j];
-      // boxArray[k] = boxAuxiliaryArray[j]; // Corrected indexing
-      k++; // Increment k after setting the value
-      j++; // Increment j
+      await view.runMergeAnimation(k - 1, mainArray);
     }
+
+    // Optionally, update the view to reflect the current state of sorting
+    // view.renderNewArray(mainArray);
+    console.log(mainArray); // Or use view.renderNewArray(mainArray); to visualize
   }
-  // async doMerge(
-  //   mainArray,
-  //   boxArray,
-  //   startIdx,
-  //   middleIdx,
-  //   endIdx,
-  //   auxiliaryArray,
-  //   boxAuxiliaryArray,
-  //   view
-  // ) {
-  //   let k = startIdx;
-  //   let i = startIdx;
-  //   let j = middleIdx + 1;
-  //   while (i <= middleIdx && j <= endIdx) {
-  //     if (auxiliaryArray[i] <= auxiliaryArray[j]) {
-  //       await this.delay(view.getSortingSpeed() / 2);
-  //       await view.runMergeAnimation(k, boxAuxiliaryArray[i]);
 
-  //       mainArray[k] = auxiliaryArray[i];
-  //       boxArray[k++] = boxAuxiliaryArray[i++];
-  //     } else {
-  //       await this.delay(view.getSortingSpeed() / 2);
-  //       await view.runMergeAnimation(k, boxAuxiliaryArray[j]);
-
-  //       mainArray[k] = auxiliaryArray[j];
-  //       boxArray[k++] = boxAuxiliaryArray[j++];
-  //     }
-  //   }
-  //   while (i <= middleIdx) {
-  //     await this.delay(view.getSortingSpeed() / 2);
-  //     await view.runMergeAnimation(k, boxAuxiliaryArray[i]); // Moved inside the loop
-
-  //     mainArray[k] = auxiliaryArray[i];
-
-  //     boxArray[k] = boxAuxiliaryArray[i]; // Corrected indexing
-  //     k++; // Increment k after setting the value
-  //     i++; // Increment i
-  //   }
-  //   while (j <= endIdx) {
-  //     await this.delay(view.getSortingSpeed() / 2);
-  //     await view.runMergeAnimation(k, boxAuxiliaryArray[j]); // Moved inside the loop
-
-  //     mainArray[k] = auxiliaryArray[j];
-  //     boxArray[k] = boxAuxiliaryArray[j]; // Corrected indexing
-  //     k++; // Increment k after setting the value
-  //     j++; // Increment j
-  //   }
-  // }
   async runHeapSort(view) {
     view.disableDisruptiveModules();
     await this.heapSort(view);
