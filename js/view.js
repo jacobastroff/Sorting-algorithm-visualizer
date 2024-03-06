@@ -65,9 +65,11 @@ class View {
       .querySelectorAll("*")
       .forEach((el) => (el.style.pointerEvents = "all"));
   }
-  renderNewArray(array) {
+  renderNewArray(array, boxArray = false) {
+    // if (!isThisMerge) {
     this.#el.innerHTML = "";
-    array.forEach((val, i, array) => {
+    // array.forEach((val, i, array) => {
+    for (const [i, val] of array.entries()) {
       const html = `<div style=" width: ${
         (window.innerWidth / array.length -
           (window.innerWidth / array.length) * 0.1) /
@@ -79,10 +81,11 @@ class View {
       }" class="box">&nbsp;</div>`;
       // console.log("DONE");
       this.#el.insertAdjacentHTML("beforeend", html);
+
       this.allBoxes = [...document.querySelectorAll(".box")];
 
       // console.log(this.allBoxes);
-    });
+    }
   }
   async switchTwoArrayValues(curValIndex, nextValIndex) {
     console.log(curValIndex, nextValIndex);
@@ -160,24 +163,28 @@ class View {
   //   });
   // }
 
-  async runMergeAnimation(indexTransformed, val) {
+  async runMergeAnimation(indexTransformed, array) {
     console.log(this.allBoxes[indexTransformed], indexTransformed);
     this.allBoxes[indexTransformed].classList.add("active");
     await new Promise((resolve) => {
       setTimeout(
-        function () {
+        async function () {
           // Assuming val contains the transformation information
 
-          console.log(
-            this.allBoxes[indexTransformed].style.transform ===
-              `translateX(${indexTransformed * 110}%)`
-          );
-          this.allBoxes[indexTransformed].style.transform = `translateX(${
-            indexTransformed * 110
-          }%)`; //This code causes the problem
+          // console.log(
+          //   this.allBoxes[indexTransformed].style.transform ===
+          //     `translateX(${indexTransformed * 110}%)`
+          // );
+          // this.allBoxes[indexTransformed].style.transform = `translateX(${
+          //   indexTransformed * 110
+          // }%)`; //This code causes the problem
           // this.allBoxes[indexTransformed].style.height = val.style.height;
 
-          console.log(`Animated box to index(${indexTransformed})`);
+          // console.log(`Animated box to index(${indexTransformed})`);
+
+          this.renderNewArray(array);
+
+          // await new Promise((resolve) => setTimeout(resolve, 0)); // This line forces the DOM updates to flush
 
           this.allBoxes[indexTransformed].classList.remove("active");
           // val.classList.remove("active");
@@ -199,6 +206,7 @@ class View {
           for (const box of this.allBoxes) {
             box.style.backgroundColor = this.themeColor;
           }
+          console.log("Done");
           resolve();
         }.bind(this),
         5000
