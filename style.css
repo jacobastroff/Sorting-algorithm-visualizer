@@ -44,7 +44,7 @@ body {
   gap: 2rem;
 }
 .sorting-methods {
-  gap: 2rem;
+  gap: 1rem;
   display: flex;
   /* flex-direction: column; */
 }
@@ -68,6 +68,7 @@ body {
   font-family: "Fira Code", monospace;
   font-weight: bold;
   transition: all 0.3s;
+  font-size: 1.2rem;
 }
 .selection-button:hover {
   background-color: rgb(3, 95, 3);

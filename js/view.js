@@ -9,8 +9,9 @@ class View {
   #quickSort = document.querySelector("#quick");
   #merge = document.querySelector("#merge");
   #heap = document.querySelector("#heap");
+  #selection = document.querySelector("#selection");
 
-  #sortingSpeed;
+  #sortingSpeed = 500;
   allBoxes;
   constructor(themeColor = "#3298df") {
     this.themeColor = themeColor;
@@ -24,7 +25,7 @@ class View {
     this.#speedModifier.addEventListener(
       "change",
       function () {
-        this.#sortingSpeed = 500 - this.#speedModifier.value;
+        this.#sortingSpeed = 1000 - Number(this.#speedModifier.value);
         console.log(this.#sortingSpeed);
       }.bind(this)
     );
@@ -37,6 +38,11 @@ class View {
     );
     this.#bubble.addEventListener("click", data.bubbleSort.bind(data, this));
     this.#insert.addEventListener("click", data.insertSort.bind(data, this));
+    this.#selection.addEventListener(
+      "click",
+      data.selectionSort.bind(data, this)
+    );
+
     console.log(data.getCurArray());
 
     this.#quickSort.addEventListener(
@@ -56,9 +62,6 @@ class View {
     document
       .querySelectorAll("*")
       .forEach((el) => (el.style.pointerEvents = "none"));
-    document
-      .querySelectorAll(".input-non-disruptive * ")
-      .forEach((el) => (el.style.pointerEvents = "all"));
   }
   enableAllModules() {
     document
@@ -102,7 +105,7 @@ class View {
         nextValElement.style.transform = curValTransform;
         curValElement.classList.remove("active");
         resolve();
-      }, this.#sortingSpeed / 5)
+      }, this.#sortingSpeed)
     );
   }
   async renderInsertAnimation(oldIndex, newIndex) {
@@ -137,7 +140,7 @@ class View {
           );
           resolve();
         }.bind(this),
-        this.#sortingSpeed / 2
+        this.#sortingSpeed
       );
     });
   }
@@ -191,7 +194,7 @@ class View {
 
           resolve();
         }.bind(this),
-        this.#sortingSpeed / 2
+        this.#sortingSpeed
       );
     });
   }
@@ -209,7 +212,7 @@ class View {
           console.log("Done");
           resolve();
         }.bind(this),
-        5000
+        1000
       )
     );
   }

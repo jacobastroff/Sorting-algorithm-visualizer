@@ -32,11 +32,17 @@
               >
               <input id="select-array-length" type="range" min="3" max="500" />
             </div>
-            <div class="input input-non-disruptive">
+            <div class="input">
               <label class="select-label" for="select-sorting-speed"
                 >Select Sorting Speed</label
               >
-              <input id="select-sorting-speed" type="range" min="1" max="490" />
+              <input
+                id="select-sorting-speed"
+                type="range"
+                value="500"
+                min="1"
+                max="999"
+              />
             </div>
           </form>
         </div>
@@ -49,6 +55,9 @@
           </button>
           <button id="quick" class="selection-button sorting-method-button">
             Quick Sort
+          </button>
+          <button id="selection" class="selection-button sorting-method-button">
+            Selection Sort
           </button>
           <button id="insert" class="selection-button sorting-method-button">
             Insertion Sort

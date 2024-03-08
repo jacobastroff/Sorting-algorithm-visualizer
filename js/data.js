@@ -78,11 +78,11 @@ class Data {
         }
       }
       if (position >= 0) {
-        await new Promise((resolve) =>
-          setTimeout(function () {
-            resolve();
-          }, delayTime)
-        );
+        // await new Promise((resolve) =>
+        //   setTimeout(function () {
+        //     resolve();
+        //   }, delayTime)
+        // );
         this.insert(el, i, position, this.#curArray);
         // console.log(this.#curArray);
         await view.renderInsertAnimation(i, position);
@@ -114,6 +114,31 @@ class Data {
 
     return array;
   }
+  async selectionSort(view) {
+    const delayTime = view.getSortingSpeed() / 2;
+
+    view.disableDisruptiveModules();
+    for (let i = 0; i <= this.#curArray.length - 1; i++) {
+      let min = i;
+      for (let j = i + 1; j <= this.#curArray.length - 1; j++) {
+        if (this.#curArray[j] < this.#curArray[min]) {
+          min = j;
+        }
+      }
+      const temp = this.#curArray[i];
+      this.#curArray[i] = this.#curArray[min];
+      this.#curArray[min] = temp;
+      await new Promise((resolve) =>
+        setTimeout(function () {
+          resolve();
+        }, delayTime)
+      );
+      view.switchTwoArrayValues(i, min);
+    }
+    await view.renderSortedArray();
+    view.enableAllModules();
+  }
+
   async runQuickSort(view) {
     view.disableDisruptiveModules();
     await this.quickSort(0, this.#curArray.length - 1, view);
@@ -132,7 +157,6 @@ class Data {
     await this.quickSort(pivot + 1, endIndex, view);
   }
   async createPartition(start, end, array, view) {
-    const delayTime = view.getSortingSpeed() / 2;
     const pivot = array[end];
     let i = start - 1;
     for (let j = start; j < end; j++) {
@@ -141,11 +165,11 @@ class Data {
         const temp = array[i];
         array[i] = array[j];
         array[j] = temp;
-        await new Promise((resolve) =>
-          setTimeout(function () {
-            resolve();
-          }, delayTime)
-        );
+        // await new Promise((resolve) =>
+        //   setTimeout(function () {
+        //     resolve();
+        //   }, delayTime)
+        // );
         console.log(view);
         console.log(i, j);
         await view.switchTwoArrayValues(i, j);
@@ -155,11 +179,11 @@ class Data {
     const temp = array[i];
     array[i] = array[end];
     array[end] = temp;
-    await new Promise((resolve) =>
-      setTimeout(function () {
-        resolve();
-      }, delayTime)
-    );
+    // await new Promise((resolve) =>
+    //   setTimeout(function () {
+    //     resolve();
+    //   }, delayTime)
+    // );
     console.log(i, end);
     await view.switchTwoArrayValues(i, end);
 
@@ -198,11 +222,11 @@ class Data {
     while (i <= middleIdx - startIdx && j <= endIdx - startIdx) {
       if (auxiliaryArray[i] <= auxiliaryArray[j]) {
         mainArray[k++] = auxiliaryArray[i++];
-        await this.delay(view.getSortingSpeed() / 2);
+        // await this.delay(view.getSortingSpeed() / 2);
         await view.runMergeAnimation(k - 1, mainArray);
       } else {
         mainArray[k++] = auxiliaryArray[j++];
-        await this.delay(view.getSortingSpeed() / 2);
+        // await this.delay(view.getSortingSpeed() / 2);
         await view.runMergeAnimation(k - 1, mainArray);
       }
     }
@@ -210,14 +234,14 @@ class Data {
     // Copy the remaining elements of the first half, if any
     while (i <= middleIdx - startIdx) {
       mainArray[k++] = auxiliaryArray[i++];
-      await this.delay(view.getSortingSpeed() / 2);
+      // await this.delay(view.getSortingSpeed() / 2);
       await view.runMergeAnimation(k - 1, mainArray);
     }
 
     // Copy the remaining elements of the second half, if any
     while (j <= endIdx - startIdx) {
       mainArray[k++] = auxiliaryArray[j++];
-      await this.delay(view.getSortingSpeed() / 2);
+      // await this.delay(view.getSortingSpeed() / 2);
       await view.runMergeAnimation(k - 1, mainArray);
     }
 
