@@ -52,7 +52,7 @@ class Data {
           this.#curArray[i] = b;
           this.#curArray[i + 1] = a;
           // console.log(this.#curArray);
-          view.switchTwoArrayValues(i, i + 1);
+          await view.switchTwoArrayValues(i, i + 1);
         }
       }
     }
@@ -133,7 +133,7 @@ class Data {
           resolve();
         }, delayTime)
       );
-      view.switchTwoArrayValues(i, min);
+      await view.switchTwoArrayValues(i, min);
     }
     await view.renderSortedArray();
     view.enableAllModules();
