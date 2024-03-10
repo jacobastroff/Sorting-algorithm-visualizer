@@ -71,14 +71,27 @@ class View {
   renderNewArray(array, boxArray = false) {
     console.log(window.innerWidth / array.length);
     console.log(this.#el.style);
-    // console.log(window.innerHeight - 10 - document.querySelector());
+    console.log(
+      window.innerHeight -
+        20 -
+        document.querySelector(".main-nav").style.height -
+        document.querySelector(".base-for-boxes").style.height -
+        (75 - 23)
+    );
     // if (!isThisMerge) {
     this.#el.innerHTML = "";
     // array.forEach((val, i, array) => {
     for (const [i, val] of array.entries()) {
       const html = `<div style=" width: ${
         (window.innerWidth - 20) / array.length / 1.1
-      }px; height: ${val / 1.5}rem; transform:translateX(${i * 110}%); ${
+      }px; height: ${
+        (window.innerHeight -
+          20 -
+          document.querySelector(".main-nav").style.height -
+          document.querySelector(".base-for-boxes").style.height -
+          (750 - val * 10)) /
+        1.5
+      }px; transform:translateX(${i * 110}%); ${
         this.themeColor && this.themeColor !== "#3298df"
           ? `background-color: ${this.themeColor}`
           : ""
