@@ -131,7 +131,9 @@ class View {
     );
     // if (!isThisMerge) {
     this.#el.innerHTML = "";
-    const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+    const isSafari =
+      /^((?!chrome|android).)*safari/i.test(navigator.userAgent) ||
+      /iPad|iPhone|iPod/.test(navigator.userAgent);
     const windowWidth = isSafari ? screen.width : window.innerWidth;
     const windowHeight = isSafari ? screen.height : window.innerHeight;
 
