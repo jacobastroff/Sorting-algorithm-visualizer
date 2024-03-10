@@ -13,7 +13,14 @@
     <title>Sorting Algorithm Visualizer</title>
     <link rel="stylesheet" type="text/css" href="style.css" />
     <link rel="stylesheet" type="text/css" href="queries.css" />
-
+    <script
+      type="module"
+      src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"
+    ></script>
+    <script
+      nomodule
+      src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"
+    ></script>
     <script defer src="js/controller.js" type="module"></script>
   </head>
   <body>
@@ -30,7 +37,7 @@
               <label class="select-label" for="select-array-length"
                 >Select Array Length</label
               >
-              <input id="select-array-length" type="range" min="3" max="500" />
+              <input id="select-array-length" type="range" min="4" max="500" />
             </div>
             <div class="input">
               <label class="select-label" for="select-sorting-speed"
@@ -47,25 +54,53 @@
           </form>
         </div>
         <div class="sorting-methods">
-          <button id="merge" class="selection-button sorting-method-button">
+          <button class="selection-button sorting-method-button merge">
             Merge Sort
           </button>
-          <button id="heap" class="selection-button sorting-method-button">
+          <button class="selection-button sorting-method-button heap">
             Heap Sort
           </button>
-          <button id="quick" class="selection-button sorting-method-button">
+          <button class="selection-button sorting-method-button quick">
             Quick Sort
           </button>
-          <button id="selection" class="selection-button sorting-method-button">
+          <button class="selection-button sorting-method-button selection">
             Selection Sort
           </button>
-          <button id="insert" class="selection-button sorting-method-button">
+          <button class="selection-button sorting-method-button insert">
             Insertion Sort
           </button>
-          <button id="bubble" class="selection-button sorting-method-button">
+          <button class="selection-button sorting-method-button bubble">
             Bubble Sort
           </button>
         </div>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke-width="1.5"
+          stroke="currentColor"
+          class="responsive-button responsive-button-menu"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
+          />
+        </svg>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke-width="1.5"
+          stroke="currentColor"
+          class="responsive-button-x hidden responsive-button"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M6 18 18 6M6 6l12 12"
+          />
+        </svg>
       </nav>
       <div class="output">
         <div class="all-boxes-container">

@@ -1,10 +1,22 @@
-@media (max-width: 87.5rem) {
+@media (max-width: 87.5em) {
   html {
     font-size: 50%;
   }
 }
-@media (max-width: 60rem) {
-  .selection-button {
+@media (max-width: 73em) {
+  .sorting-methods {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .responsive-button {
     display: none;
+  }
+}
+@media (max-width: 59em) {
+  .sorting-methods {
+    display: none;
+  }
+  .responsive-button {
+    display: block;
   }
 }

@@ -93,3 +93,16 @@ body {
 .active {
   background-color: green;
 }
+.responsive-button {
+  display: none;
+  height: 3rem;
+  color: white;
+}
+.responsive-button:hover {
+  color: #3298df;
+  cursor: pointer;
+}
+
+.hidden {
+  display: none !important;
+}

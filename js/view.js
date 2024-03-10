@@ -4,13 +4,14 @@ class View {
   #arrayModifier = document.querySelector("#select-array-length");
   #speedModifier = document.querySelector("#select-sorting-speed");
   #arrayCreator = document.querySelector(".create-new-array");
-  #bubble = document.querySelector("#bubble");
-  #insert = document.querySelector("#insert");
-  #quickSort = document.querySelector("#quick");
-  #merge = document.querySelector("#merge");
-  #heap = document.querySelector("#heap");
-  #selection = document.querySelector("#selection");
-
+  #bubbles = document.querySelectorAll(".bubble");
+  #inserts = document.querySelectorAll(".insert");
+  #quickSorts = document.querySelectorAll(".quick");
+  #merges = document.querySelectorAll(".merge");
+  #heaps = document.querySelectorAll(".heap");
+  #selections = document.querySelectorAll(".selection");
+  #responsiveButton = document.querySelector(".responsive-button-menu");
+  #responsiveButtonX = document.querySelector(".responsive-button-x");
   #sortingSpeed = 500;
   allBoxes;
   constructor(themeColor = "#3298df") {
@@ -29,6 +30,23 @@ class View {
         console.log(this.#sortingSpeed);
       }.bind(this)
     );
+    this.#responsiveButton.addEventListener("click", function () {
+      this.classList.add("hidden");
+      document.querySelector(".responsive-button-x").classList.remove("hidden");
+      console.log("clicked");
+    });
+    this.#responsiveButtonX.addEventListener("click", function () {
+      this.classList.add("hidden");
+      document
+        .querySelector(".responsive-button-menu")
+        .classList.remove("hidden");
+      console.log("clicked");
+    });
+    this.#responsiveButton.addEventListener("click", function () {
+      this.classList.add("hidden");
+      document.querySelector(".responsive-button-x").classList.remove("hidden");
+      console.log("clicked");
+    });
     this.#arrayCreator.addEventListener(
       "click",
       function () {
@@ -36,21 +54,27 @@ class View {
         this.renderNewArray(data.getCurArray());
       }.bind(this)
     );
-    this.#bubble.addEventListener("click", data.bubbleSort.bind(data, this));
-    this.#insert.addEventListener("click", data.insertSort.bind(data, this));
-    this.#selection.addEventListener(
-      "click",
-      data.selectionSort.bind(data, this)
+    this.#bubbles.forEach((button) =>
+      button.addEventListener("click", data.bubbleSort.bind(data, this))
+    );
+    this.#inserts.forEach((button) =>
+      button.addEventListener("click", data.insertSort.bind(data, this))
+    );
+    this.#selections.forEach((button) =>
+      button.addEventListener("click", data.selectionSort.bind(data, this))
     );
 
     console.log(data.getCurArray());
 
-    this.#quickSort.addEventListener(
-      "click",
-      data.runQuickSort.bind(data, this)
+    this.#quickSorts.forEach((button) =>
+      button.addEventListener("click", data.runQuickSort.bind(data, this))
     );
-    this.#heap.addEventListener("click", data.runHeapSort.bind(data, this));
-    this.#merge.addEventListener("click", data.runMergeSort.bind(data, this));
+    this.#heaps.forEach((button) =>
+      button.addEventListener("click", data.runHeapSort.bind(data, this))
+    );
+    this.#merges.forEach((button) =>
+      button.addEventListener("click", data.runMergeSort.bind(data, this))
+    );
   }
   getAllBoxes() {
     return this.allBoxes;
