@@ -131,12 +131,16 @@ class View {
     );
     // if (!isThisMerge) {
     this.#el.innerHTML = "";
+    const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+    const windowWidth = isSafari ? screen.width : window.innerWidth;
+    const windowHeight = isSafari ? screen.height : window.innerHeight;
+
     // array.forEach((val, i, array) => {
     for (const [i, val] of array.entries()) {
       const html = `<div style=" width: ${
-        (window.innerWidth - 20) / array.length / 1.1
+        (windowWidth - 20) / array.length / 1.1 / (isSafari ? 1.1 : 1)
       }px; height: ${
-        (window.innerHeight -
+        (windowHeight -
           20 -
           document.querySelector(".main-nav").style.height -
           document.querySelector(".base-for-boxes").style.height -
