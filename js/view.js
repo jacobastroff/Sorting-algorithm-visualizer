@@ -140,7 +140,10 @@ class View {
     // array.forEach((val, i, array) => {
     for (const [i, val] of array.entries()) {
       const html = `<div style=" width: ${
-        (windowWidth - 20) / array.length / 1.1 / (isSafari ? 1.1 : 1)
+        (windowWidth - (isSafari ? 75 : 20)) /
+        array.length /
+        1.1 /
+        (isSafari ? 1.1 : 1)
       }px; height: ${
         (windowHeight -
           20 -
