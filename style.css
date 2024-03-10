@@ -116,4 +116,5 @@ body {
   display: flex;
   justify-content: center;
   transform: translate(50%, 100%);
+  z-index: 1000;
 }
