@@ -16,7 +16,15 @@
   .sorting-methods {
     display: none;
   }
+  .responsive-module {
+    display: grid;
+  }
   .responsive-button {
     display: block;
+  }
+}
+@media (max-width: 32em) {
+  html {
+    font-size: 35%;
   }
 }
