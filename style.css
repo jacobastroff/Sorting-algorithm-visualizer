@@ -77,8 +77,9 @@ body {
 
 .all-boxes {
   position: relative;
-  margin: 0 auto;
+  margin: 0 10px;
   display: flex;
+
   /* justify-content: space-around; */
 }
 .box {
@@ -86,7 +87,7 @@ body {
   position: absolute;
   bottom: 0;
 
-  margin-left: 0.5rem;
+  /* margin: 0 1rem; */
   transition: transform 0.3s;
 }
 .active {

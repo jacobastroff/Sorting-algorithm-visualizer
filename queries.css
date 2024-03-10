@@ -3,3 +3,8 @@
     font-size: 50%;
   }
 }
+@media (max-width: 60rem) {
+  .selection-button {
+    display: none;
+  }
+}
