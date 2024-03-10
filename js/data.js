@@ -6,7 +6,7 @@ class Data {
   createAndSetCurArray(arraySize) {
     this.#curArray = Array.from(
       new Array(arraySize),
-      () => Math.floor(Math.random() * 75) + 1
+      () => Math.floor(Math.random() * 500) + 1
     );
   }
   setCurArray(array) {
@@ -23,7 +23,7 @@ class Data {
           1
         );
       } else {
-        this.#curArray.push(Math.floor(Math.random() * 75) + 1);
+        this.#curArray.push(Math.floor(Math.random() * 500) + 1);
       }
       if (this.#curArray.length === arraySize) break;
     }

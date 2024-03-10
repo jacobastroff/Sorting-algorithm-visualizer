@@ -140,7 +140,7 @@ class View {
           20 -
           document.querySelector(".main-nav").style.height -
           document.querySelector(".base-for-boxes").style.height -
-          (750 - val * 10)) /
+          (500 - val)) /
         1.5
       }px; transform:translateX(${i * 110}%); ${
         this.themeColor && this.themeColor !== "#3298df"
