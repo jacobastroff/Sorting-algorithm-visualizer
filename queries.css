@@ -11,6 +11,9 @@
   .responsive-button {
     display: none;
   }
+  .responsive-module {
+    display: none;
+  }
 }
 @media (max-width: 59em) {
   .sorting-methods {
@@ -25,6 +28,15 @@
 }
 @media (max-width: 32em) {
   html {
-    font-size: 35%;
+    font-size: 30%;
+  }
+}
+@media (max-width: 29em) {
+  .create-new-array {
+    padding: 1rem 1rem;
+    align-self: center;
+  }
+  .main-nav {
+    justify-content: flex-start;
   }
 }

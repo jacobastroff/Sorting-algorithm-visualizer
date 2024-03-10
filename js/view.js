@@ -12,6 +12,7 @@ class View {
   #selections = document.querySelectorAll(".selection");
   #responsiveButton = document.querySelector(".responsive-button-menu");
   #responsiveButtonX = document.querySelector(".responsive-button-x");
+  #responsiveModule = document.querySelector(".responsive-module");
   #sortingSpeed = 500;
   allBoxes;
   constructor(themeColor = "#3298df") {
@@ -30,23 +31,38 @@ class View {
         console.log(this.#sortingSpeed);
       }.bind(this)
     );
-    this.#responsiveButton.addEventListener("click", function () {
-      this.classList.add("hidden");
-      document.querySelector(".responsive-button-x").classList.remove("hidden");
-      console.log("clicked");
-    });
-    this.#responsiveButtonX.addEventListener("click", function () {
-      this.classList.add("hidden");
-      document
-        .querySelector(".responsive-button-menu")
-        .classList.remove("hidden");
-      console.log("clicked");
-    });
-    this.#responsiveButton.addEventListener("click", function () {
-      this.classList.add("hidden");
-      document.querySelector(".responsive-button-x").classList.remove("hidden");
-      console.log("clicked");
-    });
+    this.#responsiveButtonX.addEventListener(
+      "click",
+      function () {
+        this.switchResponsiveModules(
+          this.#responsiveButtonX,
+          this.#responsiveButton
+        );
+        this.disableResponsiveModule();
+      }.bind(this)
+    );
+    this.#responsiveButton.addEventListener(
+      "click",
+      function () {
+        this.switchResponsiveModules(
+          this.#responsiveButton,
+          this.#responsiveButtonX
+        );
+        this.enableResponsiveModule();
+      }.bind(this)
+    );
+    this.#responsiveModule.addEventListener(
+      "click",
+      function (e) {
+        if (e.target.closest(".selection-button")) {
+          this.switchResponsiveModules(
+            this.#responsiveButtonX,
+            this.#responsiveButton
+          );
+          this.disableResponsiveModule();
+        }
+      }.bind(this)
+    );
     this.#arrayCreator.addEventListener(
       "click",
       function () {
@@ -75,6 +91,17 @@ class View {
     this.#merges.forEach((button) =>
       button.addEventListener("click", data.runMergeSort.bind(data, this))
     );
+  }
+  switchResponsiveModules(switchFrom, switchTo) {
+    switchFrom.classList.add("hidden");
+    switchTo.classList.remove("hidden");
+    console.log("clicked");
+  }
+  enableResponsiveModule() {
+    this.#responsiveModule.classList.remove("hidden");
+  }
+  disableResponsiveModule() {
+    this.#responsiveModule.classList.add("hidden");
   }
   getAllBoxes() {
     return this.allBoxes;
