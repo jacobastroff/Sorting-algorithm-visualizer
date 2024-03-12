@@ -197,8 +197,9 @@ class Data {
   async runMergeSort(view) {
     const startIndex = 0;
     const endIndex = this.#curArray.length - 1;
-    await this.mergeSortHelper(this.#curArray, startIndex, endIndex, view);
     view.disableDisruptiveModules();
+    await this.mergeSortHelper(this.#curArray, startIndex, endIndex, view);
+
     await view.renderSortedArray();
     view.enableAllModules();
   }
