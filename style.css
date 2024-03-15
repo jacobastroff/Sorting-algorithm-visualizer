@@ -118,3 +118,6 @@ body {
   transform: translate(50%, 100%);
   z-index: 1000;
 }
+.responsive-btn {
+  background-color: #1b006c !important;
+}
